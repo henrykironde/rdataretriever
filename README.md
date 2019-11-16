@@ -37,7 +37,41 @@ that Python and the `retriever` package need to be installed first.
 *Use this if you are new to Python or don't have a local Python installation*
 
 1. Install the Python 3.7 version of the miniconda Python distribution from https://docs.conda.io/en/latest/miniconda.html
+
+- For all Python distributions, if you are not using virtual environments, simply set the Python PATH to the Python location.
+  Also set the value of `RETICULATE_PYTHON` to the Python to that location
+    
+    To see if the installation of Python is in your PATH variable:
+
+    On macOS and Linux, open the terminal and run `echo $PATH`.
+
+    On Windows, open the command Prompt and run `echo %PATH%`.
+
+    To see which Python installation is currently set as the default:
+
+    On macOS and Linux, open the terminal and run `which python`.
+
+    On Windows, open the command Prompt and run `where python`.
+
+- If you are using virtual enviroments, you will have to first install reticulate, see 2 below and use the functions `use_python()`, `use_virtualenv()`, `use_condaenv()`
+  to point to the Python path used.
+
+  Note: Currently these functions are not working as smooth as expected, we do recommended that you obtain the path of python for the 
+  active virtual enviroment and set it using `use_python(PATH_TO_ENV)`
+
+  Verify that python used by reticulate: 
+
+  ```{r}
+  Sys.which('Python')
+  library(`reticulate`)
+  py_config()
+  py_discover_config()
+  ```
+  This requires that you start R or start a new session or a new terminal
+
+
 2. In R install the `reticulate` package (the current release, 1.13, does not work on Windows so installation using devtools is recommended):
+
 
   ```coffee
   devtools::install_github("rstudio/reticulate")
@@ -75,6 +109,11 @@ that Python and the `retriever` package need to be installed first.
   library(reticulate)
   use_python("/path/to/python")
   py_install("retriever")
+  ```
+  Note: When using virtual environment make sure the `python` using which virtual environment has been created is
+  installed using `--enable-shared` option.
+  ```bash
+  ./configure --enable-shared
   ```
 
 4. Install the `rdataretriever` R package:
@@ -169,6 +208,34 @@ rdataretriever::install_postgres('usgs-elevation', list(-94.98704597353938, 39.0
 
 ```
 
+
+Provenance
+----------
+`rdataretriever` allows users to save a dataset in its current state which can be used later.
+
+Note: You can save your datasets in provenance directory by setting the environment variable `PROVENANCE_DIR`
+
+**Commit a dataset**
+```coffee
+rdataretriever::commit('abalone-age', commit_message='Sample commit', path='/home/user/')
+```
+To commit directly to provenance directory:
+```coffee
+rdataretriever::commit('abalone-age', commit_message='Sample commit')
+```
+**Log of committed dataset in provenance directory**
+```coffee
+rdataretriever::commit_log('abalone-age')
+```
+
+**Install a committed dataset**
+```coffee
+rdataretriever::install_sqlite('abalone-age-a76e77.zip') 
+```
+Datasets stored in provenance directory can be installed directly using hash value
+```coffee
+rdataretriever::install_sqlite('abalone-age', hash_value='a76e77`)
+``` 
 
 Using Dockers
 -------------
