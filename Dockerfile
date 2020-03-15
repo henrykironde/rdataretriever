@@ -1,4 +1,4 @@
-FROM rocker/tidyverse:latest
+FROM rocker/tidyverse:3.6.2
 
 MAINTAINER Weecology "https://github.com/weecology/rdataretriever"
 
