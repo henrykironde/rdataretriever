@@ -20,13 +20,15 @@ environment:
   # USE_RTOOLS: true
   # R_REMOTES_STANDALONE: true
   R_ARCH: x64
-
+  R_CHECK_ARGS: "--install-args=--build --no-multiarch --no-manual --no-examples --as-cran --no-multiarch --no-manual "
+  WARNINGS_ARE_ERRORS: 1
 # Adapt as necessary starting from here
   matrix:
     - R_VERSION: release
     - R_VERSION: devel
 
 build_script:
+  - travis-tool.sh pip install git+https://git@github.com/weecology/retriever.git
   - travis-tool.sh install_deps
 
 test_script:
