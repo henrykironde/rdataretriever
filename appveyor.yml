@@ -28,8 +28,9 @@ environment:
     - R_VERSION: devel
 
 build_script:
-  - travis-tool.sh pip install git+https://git@github.com/weecology/retriever.git
+
   - travis-tool.sh install_deps
+  - travis-tool.sh Rscript -e 'library(reticulate); reticulate::py_install('retriever')'
 
 test_script:
   - travis-tool.sh run_tests
