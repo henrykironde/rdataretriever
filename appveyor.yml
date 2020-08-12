@@ -29,7 +29,7 @@ environment:
     - R_VERSION: devel
 
 build_script:
-  - travis-tool.sh Rscript -e 'install.packages('utf8')'
+  # - travis-tool.sh Rscript -e 'install.packages('utf8')'
   - travis-tool.sh install_deps
   - travis-tool.sh Rscript -e 'library(reticulate); reticulate::py_install('git+https://git@github.com/weecology/retriever.git', pip = TRUE)'
 
